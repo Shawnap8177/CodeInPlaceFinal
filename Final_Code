@@ -1,0 +1,77 @@
+"""
+Prompts the user to type a yes or no question and gives a Hamilton Themed response based on the sentiment of the question
+"""
+
+import random
+import nltk.sentiment
+analyzer = nltk.sentiment.SentimentIntensityAnalyzer()
+from simpleimage import SimpleImage
+from PIL import Image
+from PIL import ImageFont
+from PIL import ImageDraw
+
+def ask_question():
+# I want to ask the user for a yes or no question
+# I want to score that yes or no question using sentiment analyzer
+    while True:
+        user_text = input('Ask Hamilton: present a yes or no question, be rewarded with sage advice: ')
+        score = get_sentiment(user_text)
+        reaction = answer_question(score)
+        print(score)
+        print('')
+
+# A random answer from a set of prefabricated responses.
+# I want to pick a random reaction to that question based on sentiment analyzer
+
+def answer_question(score):
+    """
+    Parameter score: a float between -1 and +1
+    Return: An emoji as a string!
+    """
+    if score > 0.5:  
+        image_1 = SimpleImage("Eliza.JPG")
+        image_1.show()
+    elif score > 0.25:  
+        image_2 = SimpleImage("KingG1.JPG")
+        image_2.show()
+    elif score > 0.15:  
+        image_3 = SimpleImage("Hamilton3.JPG")
+        image_3.show()
+    elif score > 0:    
+        image_4 = SimpleImage("Laurens1.JPG")
+        image_4.show()
+    elif score == 0:   
+        image_5 = SimpleImage("Laurens.JPG")
+        image_5.show()
+    elif score < -0.15: 
+        image_6 = SimpleImage("Angelica.JPG")
+        image_6.show()
+    elif score < -0.25: 
+        image_7 = SimpleImage("Hamilton2.JPG")
+        image_7.show()
+    elif score < -0.5: 
+        image_8 = SimpleImage("Jefferson.JPG")
+        image_8.show()
+    elif score < 0:    
+        image_9 = SimpleImage("Hamilton.JPG")
+        image_9.show()
+
+
+def get_sentiment(user_text):
+    """
+    Parameter user_text: any text (string)
+    Return: a sentiment score between -1 and +1 (float)
+    """
+    # 1. pass the text into the analyzer.polarity_scores function, part of the nltk package
+    scores = analyzer.polarity_scores(user_text)
+    # 2. extract the sentiment score. Scores is a "dictionary" (covered on May 17th)
+    sentiment_score = scores['compound']
+
+    return sentiment_score
+
+def main():
+    ask_question()
+    answer_question()
+
+if __name__ == "__main__":
+    main()
